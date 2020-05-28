@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +15,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -271,11 +268,20 @@ namespace DissertationPhysioSite.Controllers
 
             SqlConnection connection = new SqlConnection(conn);
 
+            string staffID = Request.Form[keys[0]];
+
             string cmd = "UPDATE [dbo].[Patients] SET AssignedStaffID = @StaffID WHERE UserID = @UserID;";
 
             using (SqlCommand command = new SqlCommand(cmd, connection))
             {
-                command.Parameters.Add("@StaffID", SqlDbType.Int).Value = Request.Form[keys[0]];
+                if(staffID == "NULL")
+                {
+                    command.Parameters.Add("@StaffID", DBNull.Value);
+                }
+                else
+                {
+                    command.Parameters.Add("@StaffID", SqlDbType.Int).Value = Request.Form[keys[0]];
+                }
                 command.Parameters.Add("@UserID", SqlDbType.NVarChar, 128).Value = Request.Form[keys[1]];
 
                 connection.Open();
@@ -843,7 +849,7 @@ namespace DissertationPhysioSite.Controllers
             var apiKey = WebConfigurationManager.AppSettings["sendGridKey"];
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("noReply@asclepius.com", "Asclepius");
-            var subject = "Test Update";
+            var subject = "Exercise Update";
             var to = new EmailAddress(emailAddress);
             var plainTextContent = tableData;
             var htmlContent = tableData;

@@ -243,6 +243,7 @@ class PatientsTable extends React.Component {
         const assignedStaff = this.state.assignedStaff;
         const id = this.state.id;
         if (!id || !assignedStaff) {
+            alert("Empty Field");
             return;
         }
         const data = new FormData();
@@ -252,6 +253,7 @@ class PatientsTable extends React.Component {
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/assignpatients', true);
         xhr.send(data);
+        alert("Assigned Successfully");
     }
 
     handleSetStaffSubmit(e) {
@@ -262,6 +264,7 @@ class PatientsTable extends React.Component {
         const Role = this.state.role;
 
         if (!id || !FirstName || !LastName || !Role) {
+            alert("Empty Field");
             return;
         }
 
@@ -275,6 +278,7 @@ class PatientsTable extends React.Component {
         xhr.open('post', '/setusertostaff', true);
         xhr.send(data);
         $("#setStaffModal").modal("hide");
+        alert(FirstName + " " + LastName + " is now a Staff Member");
     }
 
     handleSearchTypeChange(e) {
@@ -385,21 +389,22 @@ class PatientsTable extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm">
+                    <div className="col">
                         {this.state._IsToggleOn ?
                             <button type="button" className="btn btn-primary" onClick={this.handleToggle}> Unassigned Patients </button> :
                             <button type="button" className="btn btn-primary" onClick={this.handleToggle}> Assigned Patients </button>
                         }
                     </div>
-                    <div className="col-sm">
+                    <div className="col">
                         {this.state._IsToggleOn ?
                             <select class="form-control" id="searchOptions" onChange={this.handleSearchTypeChange}>
                                 <option value="patient">Patient (Last Name)</option>
                                 <option value="staff">Staff (Last Name)</option>
-                            </select>:
+                            </select> :
                             null
                         }
-                        
+                    </div>
+                    <div className="col">
                         <input type="text" className="input" onChange={this.handleSearchChange} placeholder="Search..." />
                     </div>
                 </div>
@@ -433,6 +438,7 @@ class PatientsTable extends React.Component {
                                     <div className="form-group">
                                         <label htmlFor="staffDropDown">Avliable Staff</label>
                                         <select className="form-control" id="staffDropDown" onChange={this.handleStaffChange}>
+                                            {this._IsToggleOn ? < option value="NULL">Unassign</option> : null}
                                             {this.renderDropboxOptions()}
                                         </select>
                                     </div>
@@ -625,6 +631,7 @@ class ExeriseTable extends React.Component {
         const sets = this.state.sets;
         const repition = this.state.repition;
         if (!id || !patient || !sets || !repition) {
+            alert("Empty Field");
             return;
         }
         const data = new FormData();
@@ -636,6 +643,7 @@ class ExeriseTable extends React.Component {
         xhr.open('post', '/assignexercise', true);
         xhr.send(data);
         $("#assignExerciseModal").modal("hide");
+        alert("Exercise Assigned");
     }
 
     handleEditSubmit(e) {
@@ -646,6 +654,7 @@ class ExeriseTable extends React.Component {
         const type = this.state.type;
         const exerciseGroup = this.state.exerciseGroup;
         if (!id || !name || !description || !type || !exerciseGroup) {
+            alert("Empty Field");
             return;
         }
         const data = new FormData();
@@ -658,6 +667,7 @@ class ExeriseTable extends React.Component {
         xhr.open('post', '/editexercise', true);
         xhr.send(data);
         $("#editExerciseModal").modal("hide");
+        alert("Exercise Added");
     }
 
     handleSearchChange(e) {
@@ -709,7 +719,7 @@ class ExeriseTable extends React.Component {
             var imageLoaded = false;
             if (exercise.Image != null) {
                 const data = exercise.Image;
-                const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="200" width="200"/>
+                const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="75" width="100" />
                 return (
                     <tr key={exercise.Exercises_ID}>
                         <td>{exercise.Name}</td>
@@ -719,7 +729,7 @@ class ExeriseTable extends React.Component {
                         <td>{exercise.Exercise_Group}</td>
                         <td><button type="button" className="btn btn-primary" onClick={this.handleAssignClick.bind(this, exercise)}>Assign</button></td>
                         {this.props.admin ? <td> <button type="button" className="btn btn-primary" onClick={this.handleEditClick.bind(this, exercise)}>Edit</button></td> : null}
-                        {this.props.admin ? <td><button type="button" className="btn btn-primary" onClick={this.handleDeleteClick.bind(this, exercise.Exercises_ID)}>Delete</button></td> : null}
+                        {this.props.admin ? <td><button type="button" className="btn btn-danger mb-2" onClick={this.handleDeleteClick.bind(this, exercise.Exercises_ID)}>Delete</button></td> : null}
                     </tr>
                 )
             }
@@ -733,7 +743,7 @@ class ExeriseTable extends React.Component {
                         <td>{exercise.Exercise_Group}</td>
                         <td><button type="button" className="btn btn-primary" onClick={this.handleAssignClick.bind(this, exercise)}>Assign</button></td>
                         {this.props.admin ? <td> <button type="button" className="btn btn-primary" onClick={this.handleEditClick.bind(this, exercise)}>Edit</button></td> : null}
-                        {this.props.admin ? <td><button type="button" className="btn btn-primary" onClick={this.handleDeleteClick.bind(this, exercise.Exercises_ID)}>Delete</button></td> : null}
+                        {this.props.admin ? <td><button type="button" className="btn btn-danger mb-2" onClick={this.handleDeleteClick.bind(this, exercise.Exercises_ID)}>Delete</button></td> : null}
                     </tr>
                 )
             }
@@ -754,15 +764,17 @@ class ExeriseTable extends React.Component {
         return (
             <div className="">
                 <div className="row">
-                    <div className="col-sm">
+                    <div className="col">
                         <ExeriseAdd></ExeriseAdd>
                     </div>
-                    <div className="col-sm">
+                    <div className="col">
                         <select className="form-control" id="searchOptions" onChange={this.handleSearchTypeChange}>
                             <option value="name">Name</option>
                             <option value="group">Group</option>
                             <option value="type">Type</option>
                         </select>
+                    </div>
+                    <div className="col">
                         <input type="text" className="input" onChange={this.handleSearchChange} placeholder="Search..." />
                     </div>
                 </div>
@@ -949,6 +961,11 @@ class ExeriseAdd extends React.Component {
         console.log(this.state.image);
         console.log(imageFile);
         if (!name || !description || !type || !exerciseGroup || !imageFile) {
+            alert("Empty Field");
+            return;
+        }
+        if (imageFile.size > 30000) {
+            alert("Image is to Big");
             return;
         }
         $("#addExerciseModal").modal("hide");
@@ -967,6 +984,8 @@ class ExeriseAdd extends React.Component {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", '/addexercise', true);
         xhr.send(data);
+
+        alert("Exericse Added");
     }
 
     modalShow() {
@@ -1128,13 +1147,12 @@ class StaffTable extends React.Component {
                     <td>{staff.FirstName}</td>
                     <td>{staff.LastName}</td>
                     <td>{staff.Role}</td>
-                    <td><button type="button" className="btn btn-primary" onClick={this.handleDeleteClick.bind(this, staff)}>Remove</button></td>
-                    <td>{this.admin ? <button type="button" className="btn btn-primary" onClick={this.handleAdminUnassignClick.bind(this, staff.UserID)}>Remove Admin</button> : <button type="button" className="btn btn-primary" onClick={this.handleAdminAssignClick.bind(this, staff.UserID)}>Set Admin</button>}</td>
+                    <td><button type="button" className="btn btn-danger mb-2" onClick={this.handleDeleteClick.bind(this, staff)}>Remove</button></td>
+                    <td>{this.admin ? <button type="button" className="btn btn-danger mb-2" onClick={this.handleAdminUnassignClick.bind(this, staff.UserID)}>Remove Admin</button> : <button type="button" className="btn btn-primary" onClick={this.handleAdminAssignClick.bind(this, staff.UserID)}>Set Admin</button>}</td>
                 </tr>
             )
         })
     }
-
 
     render() {
         return (
@@ -1294,6 +1312,7 @@ class AssignedPatients extends React.Component {
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/updateexerciseemail', true);
         xhr.send(data);
+        alert("Exercises Sent");
     }
 
     handleSearchChange(e) {
@@ -1355,6 +1374,7 @@ class AssignedPatients extends React.Component {
         const description = this.state.description;
 
         if (!id || !sets || !repition || !description) {
+            alert("Empty Field");
             return;
         }
         const data = new FormData();
@@ -1367,6 +1387,7 @@ class AssignedPatients extends React.Component {
         xhr.open('post', '/editassignedexercise', true);
         xhr.send(data);
         $("#editAssignedModal").modal("hide");
+        alert("Edit Successful");
     }
 
     renderRow() {
@@ -1387,7 +1408,7 @@ class AssignedPatients extends React.Component {
             return this.state.filteredData.map((exercises, index) => {
                 if (exercises.ImageData != null) {
                     const data = exercises.ImageData;
-                    const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="200" width="200" />
+                    const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="75" width="100" />
 
                     return (
                         <tr key={exercises.Exercises_ID}>
@@ -1399,7 +1420,7 @@ class AssignedPatients extends React.Component {
                             <td>{exercises.Sets}</td>
                             <td>{exercises.Repetitions}</td>
                             <td><button type="button" className="btn btn-primary" onClick={this.handleEditClick.bind(this, exercises)}>Edit</button></td>
-                            <td><button type="button" className="btn btn-primary" onClick={this.handleUnassignClick.bind(this, exercises)}>Unassign</button></td>
+                            <td><button type="button" className="btn btn-danger mb-2" onClick={this.handleUnassignClick.bind(this, exercises)}>Unassign</button></td>
                         </tr>
                     )
                 }
@@ -1414,7 +1435,7 @@ class AssignedPatients extends React.Component {
                             <td>{exercises.Sets}</td>
                             <td>{exercises.Repetitions}</td>
                             <td><button type="button" className="btn btn-primary" onClick={this.handleEditClick.bind(this, exercises)}>Edit</button></td>
-                            <td><button type="button" className="btn btn-primary" onClick={this.handleUnassignClick.bind(this, exercises)}>Unassign</button></td>
+                            <td><button type="button" className="btn btn-danger mb-2" onClick={this.handleUnassignClick.bind(this, exercises)}>Unassign</button></td>
                         </tr>
                     )
                 }
@@ -1440,22 +1461,24 @@ class AssignedPatients extends React.Component {
         else {
             return (
                 <div>
+                    <label htmlFor="selectPatient">Patients</label>
                     <div className="row">
-                        <div className="col-sm">
-                            <label htmlFor="selectPatient">My Patients</label>
+                        <div className="col">
                             <select className="form-control" id="selectPatient" onChange={this.handlePatientChange}>
                                 {this.renderDropboxOptions()}
                             </select>
                         </div>
-                        <div>
-                            <button type="button" className="btn btn-primary" onClick={this.handleSendUpdate}>SendUpdate</button>
+                        <div className="col">
+                            <button type="button" className="btn btn-primary" onClick={this.handleSendUpdate}>Send Exercises</button>
                         </div>
-                        <div className="col-sm">
+                        <div className="col">
                             <select className="form-control" id="searchOptions" onChange={this.handleSearchTypeChange}>
                                 <option value="name">Name</option>
                                 <option value="group">Group</option>
                                 <option value="type">Type</option>
                             </select>
+                        </div>
+                        <div className="col">
                             <input type="text" className="input" onChange={this.handleSearchChange} placeholder="Search..." />
                         </div>
                     </div>

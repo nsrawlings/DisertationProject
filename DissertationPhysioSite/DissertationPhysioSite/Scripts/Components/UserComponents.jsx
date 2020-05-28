@@ -49,6 +49,7 @@ class AssignedExeriseTable extends React.Component {
         this.setState({ searchType: e.target.value });
     }
 
+    //Handles the search change
     handleSearchChange(e) {
         var currentList = [];
         var newList = [];
@@ -59,18 +60,16 @@ class AssignedExeriseTable extends React.Component {
             // Assign the original list to currentList
             currentList = this.state.data;
 
-            // Use .filter() to determine which items should be displayed
-            // based on the search terms
+            //.filter() to serach for key term dictated by seracg
+            //Select case for chaning which value to search on.
             newList = currentList.filter(item => {
                 if (this.state.searchType == "name") {
                     lc = item.Name.toLowerCase();
                 }
-                if (this.state.searchType == "group") {
-                    lc = item.Exercise_Group.toLowerCase();
-                }
                 if (this.state.searchType == "type") {
                     lc = item.Type.toLowerCase();
                 }
+                //Name by defualt
                 else {
                     const lc = item.Name.toLowerCase();
                 }
@@ -91,12 +90,12 @@ class AssignedExeriseTable extends React.Component {
         });
     }
 
-
+    //Take data and map it to rows then pass back back to main render fucntion
     renderRow() {
         return this.state.filteredData.map((exercises, index) => {
             if (exercises.ImageData != null) {
                 const data = exercises.ImageData;
-                const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="200" width="200" />
+                const Example = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} height="75" width="100"  />
                 return (
                     <tr key={exercises.Exercises_ID}>
                         <td>{exercises.Name}</td>
@@ -122,16 +121,23 @@ class AssignedExeriseTable extends React.Component {
             }
         })
     }
-
+    // Main Render Function
     render() {
         return (
             <div>
-                <div>
-                    <select className="form-control" id="searchOptions" onChange={this.handleSearchTypeChange}>
-                        <option value="name">Name</option>
-                        <option value="type">Type</option>
-                    </select>
-                    <input type="text" className="input" onChange={this.handleSearchChange} placeholder="Search..." />
+                <div className="row">
+                    <div className="col-sm">
+                        <label htmlFor="searchOptions" className="row row-form-label">Search By</label>
+                    </div>
+                    <div className="col-sm">
+                    </div>
+                </div>
+                <div className="row">
+                        <select className="form-control" id="searchOptions" onChange={this.handleSearchTypeChange}>
+                            <option value="name">Name</option>
+                            <option value="type">Type</option>
+                        </select>
+                        <input type="text" className="input" onChange={this.handleSearchChange} placeholder="Search..." /> 
                 </div>
                 <table className="table table-striped table-bordered table-hover">
                     <thead className="thead-dark">
@@ -153,21 +159,4 @@ class AssignedExeriseTable extends React.Component {
         );
     }
 }
-
-class PlaceHolder1 extends React.Component {
-    render() {
-        return (
-            <h1>Place Holder 1</h1>
-        );
-    }
-}
-
-class PlaceHolder2 extends React.Component {
-    render() {
-        return (
-            <h1>Place Holder 2</h1>
-        );
-    }
-}
-
 ReactDOM.render(<TableCloumn />, document.getElementById('content'));

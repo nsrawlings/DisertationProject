@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Asclepius</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -22,15 +22,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
                     @if (User.IsInRole("Staff") || User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("Staff", "Staff", "Staff", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("My Patients", "Staff", "Staff", new { area = "" }, new { @class = "navbar-brand" })</li>
                     }
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("User", "UserView", "User", new { area = "" }, new { @class = "navbar-brand" })</li>
+                        <li>@Html.ActionLink("My Exercises", "UserView", "User", new { area = "" }, new { @class = "navbar-brand" })</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
